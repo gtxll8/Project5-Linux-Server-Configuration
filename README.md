@@ -82,9 +82,8 @@ calling "~$ date" will now show:
 Fri Oct  2 09:22:28 UTC 2015
 ```
 ##### Step 3 - Enable and configure UFW
-```json
-   // code for coloring
-```
+! Make sure that before UFW is enabled the ssh port 2200 is allowed or risk locking out of your instance.
+
 change ssh port to 2200
 ~$ sudo ufw allow 2200/tcp
 allow 80, 124
