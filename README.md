@@ -210,7 +210,7 @@ and here is my config, exposing both the IP and registered domain name:
                 </Directorymatch>
 </VirtualHost>
 ```
-Note that .git is blocked to serve adding this:
+Note that .git is prevented to be accidently served by adding this:
 
 ```
                 <Directorymatch "^/.*/\.git/">
@@ -307,6 +307,21 @@ host    all             all             ::1/128                 md5
 #host    replication     postgres        ::1/128                 md5
 ```
 here we see that only local IPs are allowed.
+
+Important postgres security issue, checking to make sure db is listening to localhost only NOT ‘*’ :
+```
+/etc/postgresql/9.3/main/postgresql.conf
+```
+```
+#------------------------------------------------------------------------------
+# CONNECTIONS AND AUTHENTICATION
+#------------------------------------------------------------------------------
+
+# - Connection Settings -
+
+#listen_addresses = 'localhost'
+```
+
 
 Reference:
 https://www.digitalocean.com/community/tutorials/how-to-secure-postgresql-on-an-ubuntu-vps
