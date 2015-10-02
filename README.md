@@ -1,7 +1,7 @@
 ## Project5-Linux-Server-Configuration ##
 Udacity final Project 5 Linux server configuration
 
-###### The object of this project is to secure a linux distribution server and host the web application from the earlier Project3. On the host provided by Udacity and Amazon I've implemented a list of security features to meet and exceed the required specifications also making sure that the application is fully functional for public use. Have also installed scheduled cron jobs and applications that automatically download updates and upgrade the system.
+###### The object of this project is to secure a linux distribution server and host the web application from the earlier Project3. On the host provided by Udacity and Amazon I've implemented a list of security features to meet and exceed the required specifications also making sure that the application is fully functional for public use. I have also installed scheduled cron jobs and applications that automatically download updates and upgrade the system.
 
  - for public access to this instance use: http://udacitymarket.no-ip.biz
  - the external IP is : http://52.89.6.106/ but it can only be used to view the website content, authentication will not work as Google's OAuth 2.0 client IDs only accepts fully qualified domain names.
