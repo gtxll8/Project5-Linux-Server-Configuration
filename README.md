@@ -10,26 +10,37 @@ Udacity final project 5 Linux server configuration
 ###### Step 1 - Add new user grader, setup Key-based authentication, change default SSH port to 2200
 
  ```
-#adduser grader
+~$ adduser grader
+```
 add this user to the www-data group so it can install the flask app ( I have restricted access to the www directory to www-data group )
-#usermod -a -G www-data grader
+```
+~$ usermod -a -G www-data grader
+```
 add user to sudo:
-#usermod -a -G sudo grader
-generate ssh keys on another server and copy the public hash into
-~/.ssh/authorized_keys
-#ssh-keygen -t rsa
+```
+~$ usermod -a -G sudo grader
+```
+generate ssh keys on another server and copy the public hash into : ~/.ssh/authorized_keys
+```
+~$ ssh-keygen -t rsa
+```
 copy them over:
-#scp grader@xxx.xxx.167.124:~/.ssh/gradersrv_rsa.pub .
+```
+~$ scp grader@xxx.xxx.167.124:~/.ssh/gradersrv_rsa.pub .
+```
 and add:
-#cat gradersrv_rsa.pub >> authorized_keys
+```
+~$cat gradersrv_rsa.pub >> authorized_keys
  ```
+ 
 Resources: https://www.digitalocean.com/community/tutorials/how-to-install-and-use-logwatch-log-analyzer-and-reporter-on-a-vps
 
 ###### Step 2 - Configuring local timezone to UTC
 Even though the instance from amazon was on UTC already, am listing below the commands for reference:
 
+install with:
 ```
-dpkg-reconfigure tzdata
+~$ dpkg-reconfigure tzdata
 ```
 result after :
 ```
@@ -38,7 +49,7 @@ Local time is now:      Fri Oct  2 09:21:31 UTC 2015.
 Universal Time is now:  Fri Oct  2 09:21:31 UTC 2015.
 ```
 
-calling "date" will now show:
+calling "~$ date" will now show:
 ```
 Fri Oct  2 09:22:28 UTC 2015
 ```
