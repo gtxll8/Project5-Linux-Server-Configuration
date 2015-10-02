@@ -112,4 +112,24 @@ To                         Action      From
 80/tcp (v6)                ALLOW       Anywhere (v6)
 123 (v6)                   ALLOW       Anywhere (v6)
 ```
+##### Step 4 - Install and configure Apache to serve Python mod_wsgi applications
+
+I have secured the  /var/www/ folder and making it accessible only to users in www-data group, reson why grader is made part of that group earlier.
+
+install teh neccessary:
+```
+~$ sudo aptitude install apache2 apache2.2-common apache2-mpm-prefork apache2-utils libexpat1 ssl-cert
+```
+install mod-wsgi:
+```
+~$ sudo aptitude install libapache2-mod-wsgi
+~$ sudo a2enmod wsgi
+~$ sudo service apache2 restart
+```
+**Important, disable directory browsing:
+```
+~$ sudo a2dismod autoindex
+```
+
+
 
