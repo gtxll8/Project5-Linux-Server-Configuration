@@ -326,14 +326,78 @@ Important postgres security issue, checking to make sure db is listening to loca
 
 ##### Automatic Package Updates
 
-* cron-apt method
+* cron-apt method implementation
 
 cron-apt is designed to automatically update the package list and download upgraded packages.
 
-install :
 ```
 sudo apt-get install cron-apt
 ```
+this will be croned every day at 4AM:
+
+```
+0 4  * * * root test -x /usr/sbin/cron-apt && /usr-sbin/cron-apt
+```
+Reference:
+https://help.ubuntu.com/community/AutoWeeklyUpdateHowTo
+
+
+ * unattended-upgrades package method implementation
+
+installed with:
+
+```
+sudo apt-get install unattended-upgrades
+```
+configured with :
+
+```
+sudo dpkg-reconfigure --priority=low unattended-upgrades
+```
+which will create /etc/apt/apt.conf.d/20auto-upgrades with the following contents:
+
+```
+APT::Periodic::Update-Package-Lists "1";
+APT::Periodic::Unattended-Upgrade "1";
+```
+I have enabled sending emails only if there are any errors modifying:
+```
+/etc/apt/apt.conf.d/50unattended-upgrades
+```
+changing it to my email account:
+```
+Unattended-Upgrade::Mail "george@mydomain.com”
+Unattended-Upgrade::MailOnlyOnError "true";
+```
+but no Reboot
+```
+Unattended-Upgrade::Automatic-Reboot "false";
+```
+To test I am running this :
+```
+sudo unattended-upgrade -v -d --dry-run
+```
+Note: You may need to install sendmail to be able to send emails from the server :
+```
+sudo apt-get install mailutils
+sudo apt-get install sendmail
+```
+After the automatic updates/upgrades I would get an email like this:
+```
+“Unattended upgrade returned: True
+
+Warning: A reboot is required to complete this upgrade.
+
+Packages that were upgraded:
+ cloud-init grub-legacy-ec2 libcgmanager0 python3-software-properties
+ software-properties-common
+. . . 
+```
+
+Reference:
+https://help.ubuntu.com/community/AutomaticSecurityUpdates
+
+
 
 
 Reference:
