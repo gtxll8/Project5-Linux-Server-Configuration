@@ -1,7 +1,8 @@
 ## Project5-Linux-Server-Configuration ##
+
 Udacity final Project 5 Linux server configuration
 
-###### The object of this project is to secure a linux distribution server and host the web application from the earlier Project3. On the host provided by Udacity and Amazon I've implemented a list of security features to meet and exceed the required specifications also making sure that the application is fully functional for public use. I have also installed scheduled cron jobs and applications that automatically download updates and upgrade the system unattended.
+###### The object of this project is to secure a Linux distribution server and host the web application from the earlier Project3. On the host provided by Udacity and Amazon I've implemented a list of security features to meet and exceed the required specifications also making sure that the application is fully functional for public use. I have also installed and scheduled cron jobs with applications that automatically download updates and upgrade the system unattended.
 
  - for public access to this instance use: http://udacitymarket.no-ip.biz
  - the external IP is : http://52.89.6.106/ but it can only be used to view the website content, authentication will not work as Google's OAuth 2.0 client IDs only accepts fully qualified domain names.
@@ -551,7 +552,7 @@ check if it’s enabled and restart apache :
 sudo a2enmod evasive
 sudo service apache2 restart
 ```
-resources:
+Resources:
 https://www.digitalocean.com/community/tutorials/how-to-set-up-mod_security-with-apache-on-debian-ubuntu
 https://www.thefanclub.co.za/how-to/how-install-apache2-modsecurity-and-modevasive-ubuntu-1204-lts-server
 
@@ -579,7 +580,7 @@ logpath  = /var/log/auth.log
 maxretry = 3
 ```
 
-if you want to receive email alerts every time there is a potential attack, also change from :
+to receive email alerts every time there is a potential attack, I've changed from :
 ```
 action = %(action_)s
 ```
@@ -608,14 +609,12 @@ you will see an entry like this :
 ```
 -A fail2ban-ssh -s xx.xxx.12.198/32 -j REJECT --reject-with icmp-port-unreachable
 ```
-which means that my attempt was recorded and IP is now banned. After third try I would get connection failed.
-
-also getting the email :
+which means that my attempt was recorded and my IP is now banned, also receiving the following email :
 ```
 Hi,
 The IP xx.xxx.12.198 has just been banned by Fail2Ban after
 3 attempts against ssh.
 ```
-resource:
+Resource:
 https://www.digitalocean.com/community/tutorials/how-to-protect-an-apache-server-with-fail2ban-on-ubuntu-14-04
 
