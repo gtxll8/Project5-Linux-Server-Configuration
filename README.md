@@ -7,6 +7,7 @@ Udacity final project 5 Linux server configuration
 
 ##### Steps below are explained using unix commands and where neccessary commenting reasons behind the choices I have made, including links to some helpfull resources. 
 
+
 ##### Step 1 - Add new user grader, setup Key-based authentication, change default SSH port to 2200
 
  ```
@@ -32,8 +33,35 @@ and add:
 ```
 ~$cat gradersrv_rsa.pub >> authorized_keys
  ```
+ change the ssh port to 2200, and secure logging to instance, install ssh:
+```
+~$ sudo apt-get install openssh-server
+```
+change settings:
+```
+~$ sudo nano /etc/ssh/sshd_config
+```
+edit:
+```
+#What ports, IPs and protocols we listen for
+Port 2200
+```
+also change root login to no:
+```
+PermitRootLogin no
+```
+and no passwords:
+```
+PasswordAuthentication no
+```
+enable key authentication:
+```
+PubkeyAuthentication yes
+```
+
  
 Resources: https://www.digitalocean.com/community/tutorials/how-to-install-and-use-logwatch-log-analyzer-and-reporter-on-a-vps
+
 
 ##### Step 2 - Configuring local timezone to UTC
 Even though the instance from amazon was on UTC already, am listing below the commands for reference:
