@@ -1,7 +1,7 @@
 ## Project5-Linux-Server-Configuration ##
 Udacity final Project 5 Linux server configuration
 
-###### The object of this project is to secure a linux distribution server and host the web application from the earlier Project3. On the host provided by Udacity and Amazon I've implemented a list of security features to meet and exceed the required specifications also making sure that the application is fully functional for public use. I have also installed scheduled cron jobs and applications that automatically download updates and upgrade the system.
+###### The object of this project is to secure a linux distribution server and host the web application from the earlier Project3. On the host provided by Udacity and Amazon I've implemented a list of security features to meet and exceed the required specifications also making sure that the application is fully functional for public use. I have also installed scheduled cron jobs and applications that automatically download updates and upgrade the system unattended.
 
  - for public access to this instance use: http://udacitymarket.no-ip.biz
  - the external IP is : http://52.89.6.106/ but it can only be used to view the website content, authentication will not work as Google's OAuth 2.0 client IDs only accepts fully qualified domain names.
@@ -291,7 +291,7 @@ Shall the new role be a superuser? (y/n) y
 CREATE ROLE
 postgre
 ```
-securing postgres, no remote. For this we are looking into the host based authentication file:
+securing postgres - no remote. For this we are looking into the host based authentication file:
 
 ```
 sudo nano /etc/postgresql/9.3/main/pg_hba.conf
@@ -309,7 +309,7 @@ host    all             all             ::1/128                 md5
 ```
 here we see that only local IPs are allowed.
 
-Important postgres security issue, checking to make sure db is listening to localhost only NOT ‘*’ :
+Important postgres security issue, checking to make sure db is listening to localhost only, NOT ‘*’ :
 ```
 /etc/postgresql/9.3/main/postgresql.conf
 ```
@@ -322,7 +322,9 @@ Important postgres security issue, checking to make sure db is listening to loca
 
 #listen_addresses = 'localhost'
 ```
+#### Extra work done to harden the security of the server, update and upgrade packages automatically and email alerts providing server's vital status or security alerts.
 
+##### Automatic Package Updates
 
 Reference:
 https://www.digitalocean.com/community/tutorials/how-to-secure-postgresql-on-an-ubuntu-vps
