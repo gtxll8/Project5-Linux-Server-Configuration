@@ -322,9 +322,19 @@ Important postgres security issue, checking to make sure db is listening to loca
 
 #listen_addresses = 'localhost'
 ```
-#### Extra work done to harden the security of the server, update and upgrade packages automatically and email alerts providing server's vital status or security alerts.
+#### Extra work done to harden the security of the server, update and upgrade packages automatically, also email alerting providing server's vital status or any security alerts.
 
 ##### Automatic Package Updates
+
+* cron-apt method
+
+cron-apt is designed to automatically update the package list and download upgraded packages.
+
+install :
+```
+sudo apt-get install cron-apt
+```
+
 
 Reference:
 https://www.digitalocean.com/community/tutorials/how-to-secure-postgresql-on-an-ubuntu-vps
