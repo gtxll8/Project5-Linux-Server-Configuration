@@ -7,16 +7,16 @@ Udacity final project 5 Linux server configuration
 
 ##### Steps below are explained using unix commands and where neccessary commenting reasons behind the choices I have made, including links to some helpfull resources. 
 
-###### Step 1 - Add new user grader, setup Key-based authentication, change default SSH port to 2200
+##### Step 1 - Add new user grader, setup Key-based authentication, change default SSH port to 2200
 
  ```
 ~$ adduser grader
 ```
--- add this user to the www-data group so it can install the flask app ( I have restricted access to the www directory to www-data group )
+add this user to the www-data group so it can install the flask app ( I have restricted access to the www directory to www-data group )
 ```
 ~$ usermod -a -G www-data grader
 ```
-- add user to sudo:
+add user to sudo:
 ```
 ~$ usermod -a -G sudo grader
 ```
@@ -35,7 +35,7 @@ and add:
  
 Resources: https://www.digitalocean.com/community/tutorials/how-to-install-and-use-logwatch-log-analyzer-and-reporter-on-a-vps
 
-###### Step 2 - Configuring local timezone to UTC
+##### Step 2 - Configuring local timezone to UTC
 Even though the instance from amazon was on UTC already, am listing below the commands for reference:
 
 install with:
