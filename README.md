@@ -210,8 +210,17 @@ and here is my config, exposing both the IP and registered domain name:
                 </Directorymatch>
 </VirtualHost>
 ```
+Note that .git is blocked to serve adding this:
 
-** One last important thing, disable directory browsing:
+```
+                <Directorymatch "^/.*/\.git/">
+                        Order deny,allow
+                        Deny from all
+                </Directorymatch>
+```
+
+
+- Important - disable directory browsing! :
 ```
 ~$ sudo a2dismod autoindex
 ```
