@@ -12,11 +12,11 @@ Udacity final project 5 Linux server configuration
  ```
 ~$ adduser grader
 ```
-add this user to the www-data group so it can install the flask app ( I have restricted access to the www directory to www-data group )
+- add this user to the www-data group so it can install the flask app ( I have restricted access to the www directory to www-data group )
 ```
 ~$ usermod -a -G www-data grader
 ```
-add user to sudo:
+- add user to sudo:
 ```
 ~$ usermod -a -G sudo grader
 ```
