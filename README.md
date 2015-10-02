@@ -33,7 +33,7 @@ and add:
 ```
 ~$cat gradersrv_rsa.pub >> authorized_keys
  ```
- change the ssh port to 2200, and secure logging to instance, install ssh:
+ change the ssh port to 2200,first install ssh:
 ```
 ~$ sudo apt-get install openssh-server
 ```
@@ -41,7 +41,7 @@ change settings:
 ```
 ~$ sudo nano /etc/ssh/sshd_config
 ```
-edit:
+edit default port 22 to 2200:
 ```
 #What ports, IPs and protocols we listen for
 Port 2200
