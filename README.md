@@ -1,4 +1,4 @@
-# Project5-Linux-Server-Configuration
+## Project5-Linux-Server-Configuration ##
 Udacity final project 5 Linux server configuration
 
 ##### The object of this project is to secure a linux distribution server and host the web application from the earlier Project 3. On the host provided by Udacity and Amazon I've implemented a list of security features to meet and exceed the required specifications also making sure that the application is fully functional for public use. 
@@ -26,7 +26,7 @@ and add:
 Resources: https://www.digitalocean.com/community/tutorials/how-to-install-and-use-logwatch-log-analyzer-and-reporter-on-a-vps
 
 ###### Step 2 - Configuring local timezone to UTC
-Even though the instance from amazon had UTC already, am listing below the commands for reference:
+Even though the instance from amazon was on UTC already, am listing below the commands for reference:
 
 ```
 dpkg-reconfigure tzdata
