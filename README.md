@@ -322,6 +322,9 @@ Important postgres security issue, checking to make sure db is listening to loca
 
 #listen_addresses = 'localhost'
 ```
+Reference:
+https://www.digitalocean.com/community/tutorials/how-to-secure-postgresql-on-an-ubuntu-vps
+
 #### Extra work done to harden the security of the server, update and upgrade packages automatically, also email alerting providing server's vital status or any security alerts.
 
 ##### Automatic Package Updates
@@ -397,8 +400,222 @@ Packages that were upgraded:
 Reference:
 https://help.ubuntu.com/community/AutomaticSecurityUpdates
 
+#####  Monitoring
+
+* Logwatch installed to monitor all activities from the server and send emails with reports regulary
+
+installed with:
+```
+aptitude install -y logwatch
+```
+configuring with:
+```
+nano /usr/share/logwatch/default.conf/logwatch.conf
+```
+changes that I've made:
+```
+MailTo = myemail@dot.com
+Range = today
+Detail = Medium
+```
+example of reports I receive:
+```
+################### Logwatch 7.4.0 (05/29/13) ####################
+        Processing Initiated: Thu Oct  1 15:12:04 2015
+        Date Range Processed: today
+                              ( 2015-Oct-01 )
+                              Period is day.
+        Detail Level of Output: 0
+        Type of Output/Format: mail / text
+        Logfiles for Host: ip-10-20-26-195
+ ##################################################################
+
+ --------------------- httpd Begin ------------------------
+
+ Requests with error response codes
+    400 Bad Request
+       /x: 1 Time(s)
+    403 Forbidden
+       /admin: 2 Time(s)
+       /: 1 Time(s)
+    404 Not Found
+       /cgi-bin/php: 2 Time(s)
+       /cgi-bin/php-cgi: 2 Time(s)
+       /cgi-bin/php.cgi: 2 Time(s)
+       /cgi-bin/php4: 2 Time(s)
+       /cgi-bin/php5: 2 Time(s)
+       /favicon.ico: 1 Time(s)
+       /manager/html: 1 Time(s)
+       /xmlrpc.php: 1 Time(s)
+    500 Internal Server Error
+       /forsale/1/new: 4 Time(s)
+       /admin/: 2 Time(s)
+       /favicon.ico: 2 Time(s)
+       /: 1 Time(s)
+
+ ---------------------- httpd End -------------------------
 
 
+ ###################### Logwatch End #########################
 
+```
 Reference:
-https://www.digitalocean.com/community/tutorials/how-to-secure-postgresql-on-an-ubuntu-vps
+https://www.digitalocean.com/community/tutorials/how-to-install-and-use-logwatch-log-analyzer-and-reporter-on-a-vps
+
+#####  Security hardening - Monitoring firewall attacks
+
+ - I’ve installed and enabled ModSecurity Web Application Firewall (WAF):
+```
+apt-get install libapache2-modsecurity
+```
+verify if it works:
+```
+apachectl -M | grep --color security
+```
+Configuring, rename the default :
+```
+mv /etc/modsecurity/modsecurity.conf{-recommended,}
+```
+edit modsecurity.conf: nano /etc/modsecurity/modsecurity.conf
+
+```
+SecRuleEngine On
+```
+Not to use resources turn off this :
+```
+SecResponseBodyAccess Off
+```
+We could limit the data uploads but because I have an upload request on my site I left these as default:
+```
+SecRequestBodyLimit
+SecRequestBodyNoFilesLimit
+```
+Load the default rules and tell Apache to look at this locations :
+```
+sudo nano /etc/apache2/mods-enabled/modsecurity.conf
+```
+```
+Include "/usr/share/modsecurity-crs/*.conf"
+Include "/usr/share/modsecurity-crs/activated_rules/*.conf"
+```
+Symlinks must be created inside the activated_rules directory to activate these. Let us activate the SQL injection rules.
+```
+cd /usr/share/modsecurity-crs/activated_rules/
+ln -s /usr/share/modsecurity-crs/base_rules/modsecurity_crs_41_sql_injection_attacks.conf .
+```
+Apache has to be reloaded for the rules to take effect.
+```
+service apache2 reload
+```
+Important Note:
+
+My /etc/apache2/mods-enabled/modsecurity.conf example :
+```
+Include "/usr/share/modsecurity-crs/*.conf"
+Include "/usr/share/modsecurity-crs/activated_rules/*.conf"
+
+<Directory "/var/www/FlaskApp/">
+    <IfModule security2_module>
+        SecRuleEngine Off
+    </IfModule>
+</Directory>
+```
+Am excluding FlaskApp otherwise will not be accessible for queries.
+
+ - I’ve also added ModEvasive preventing DDOs attacks :
+
+install and configure permissions also create a log file directory:
+```
+sudo apt-get install libapache2-mod-evasive
+sudo mkdir /var/log/mod_evasive
+sudo chown www-data:www-data /var/log/mod_evasive/
+```
+add the following to : /etc/apache2/mods-available/mod-evasive.conf
+```
+<ifmodule mod_evasive20.c>
+   DOSHashTableSize 3097
+   DOSPageCount  2
+   DOSSiteCount  50
+   DOSPageInterval 1
+   DOSSiteInterval  1
+   DOSBlockingPeriod  10
+   DOSLogDir   /var/log/mod_evasive
+   DOSEmailNotify  EMAIL@DOMAIN.com
+   DOSWhitelist   127.0.0.1
+</ifmodule>
+```
+
+
+check if it’s enabled and restart apache :
+```
+sudo a2enmod evasive
+sudo service apache2 restart
+```
+resources:
+https://www.digitalocean.com/community/tutorials/how-to-set-up-mod_security-with-apache-on-debian-ubuntu
+https://www.thefanclub.co.za/how-to/how-install-apache2-modsecurity-and-modevasive-ubuntu-1204-lts-server
+
+#####  Security hardening - Monitoring brute force login attacks
+
+ - I have also installed Fail2ban on my instance. There is a strong possibility to lock yourself out so by adding my ip to  /etc/fail2ban/jail.local had minimized that.
+
+install :
+```
+sudo apt-get update
+sudo apt-get install fail2ban
+```
+copy and changed the local configuration:
+```
+sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+```
+changed the ssh entry on port 2200 to ban any failed attempts:
+``` 
+[ssh]
+
+enabled  = true
+port     = 2200
+filter   = sshd
+logpath  = /var/log/auth.log
+maxretry = 3
+```
+
+if you want to receive email alerts every time there is a potential attack, also change from :
+```
+action = %(action_)s
+```
+to
+```
+action = %(action_mw)s
+```
+
+Added my IP to ignore list , just in case am locking myself out:
+```
+ignoreip = 127.0.0.1/8  <my ip>
+```
+set my email in send mail:
+```
+destemail = root@localhost
+```
+to
+```
+destemail = myemail@dot.com
+```
+Tested by trying to log with an unregistered user and got banned, checking with :
+```
+sudo iptables -S
+```
+you will see an entry like this :
+```
+-A fail2ban-ssh -s xx.xxx.12.198/32 -j REJECT --reject-with icmp-port-unreachable
+```
+which means that my attempt was recorded and IP is now banned. After third try I would get connection failed.
+
+also getting the email :
+```
+Hi,
+The IP xx.xxx.12.198 has just been banned by Fail2Ban after
+3 attempts against ssh.
+```
+resource:
+https://www.digitalocean.com/community/tutorials/how-to-protect-an-apache-server-with-fail2ban-on-ubuntu-14-04
+
