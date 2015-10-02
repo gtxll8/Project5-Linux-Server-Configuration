@@ -28,9 +28,9 @@ Resources: https://www.digitalocean.com/community/tutorials/how-to-install-and-u
 ###### Step 2 - Configuring local timezone to UTC
 Even though the instance from amazon was on UTC already, am listing below the commands for reference:
 
-```
+`
 dpkg-reconfigure tzdata
-
+`
 result after :
 
 Current default time zone: 'Etc/UTC'
