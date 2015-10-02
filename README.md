@@ -293,7 +293,7 @@ postgre
 securing postgres, no remote. For this we are looking into the host based authentication file:
 
 ```
-sudo nano /etc/postgresql/9.1/main/pg_hba.conf
+sudo nano /etc/postgresql/9.3/main/pg_hba.conf
 ```
 ```
 # IPv4 local connections:
