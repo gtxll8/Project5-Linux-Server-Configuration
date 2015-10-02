@@ -5,7 +5,7 @@ The object of this project is to secure a linux distribution server and host the
  - to access this instance publically use : http://udacitymarket.no-ip.biz
  - the external IP is : http://52.89.6.106/ but it can only be used to view the website content, authentication will not work as Google's OAuth 2.0 client IDs only accepts fully qualified domain names.
 
-Steps below are explained using unix commands and where neccessary commenting reasons behind the choices I have made, including links to some helpfull resources. 
+Steps below are explained using unix commands and where necessary commenting reasons behind the choices I have made, including links to some helpful resources. 
 
 
 ##### Step 1 - Add new user grader, setup Key-based authentication, change default SSH port to 2200
@@ -114,7 +114,7 @@ To                         Action      From
 ```
 ##### Step 4 - Install and configure Apache to serve Python mod_wsgi applications
 
-I have secured the  /var/www/ folder and making it accessible only to users in www-data group, reson why grader is made part of that group earlier.
+I have secured the  /var/www/ folder and making it accessible only to users in www-data group, reason why grader is made part of that group earlier.
 
 install the neccessary:
 ```
@@ -138,23 +138,37 @@ create the structure to serve the app, I've used following commands:
 ~$ sudo mkdir static templates
 ```
 My directory structure after this:
-
+```
 |----FlaskApp
 |---------FlaskApp
 |--------------static
 |--------------templates
+```
+In order to make the uploads possible in the static directory I've chmod this to 777
 
-I have also used virtual environment to isolate from the main local host. Installed pip fpr this:
+I have also used virtual environment to isolate from the main local host. Installed pip for this:
 ```
 sudo apt-get install python-pip 
 sudo pip install virtualenv 
-
-
+```
+Now install Flask and dependencies for the Project 3 app in the virtual environment:
+```
+source venv/bin/activate 
+sudo pip install Flask
+pip install Flask-Login
+pip install Flask-WTF
+pip install flask-seasurf
+```
+Installed Git so I can clone the repository, I have cloned it in my home directory and copy the files
+across to /www/FlaskApp directory manually.
 
 ** Important, disable directory browsing:
 ```
 ~$ sudo a2dismod autoindex
 ```
+Resources:
+http://fideloper.com/user-group-permissions-chmod-apache
+https://www.digitalocean.com/community/tutorials/installing-mod_wsgi-on-ubuntu-12-04
 
 
 
