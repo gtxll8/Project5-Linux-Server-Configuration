@@ -81,3 +81,25 @@ calling "~$ date" will now show:
 ```
 Fri Oct  2 09:22:28 UTC 2015
 ```
+##### Step 3 - Enable and configure UFW
+```json
+   // code for coloring
+```
+change ssh port to 2200
+~$ sudo ufw allow 2200/tcp
+allow 80, 124
+~$ sudo ufw allow ntp
+#~$ sudo ufw allow http
+enable:
+#~$ sudo ufw enable
+check status:
+#~$ sudo ufw status
+
+To                         Action      From
+--                         ------      ----
+2200/tcp                   ALLOW       Anywhere
+80/tcp                     ALLOW       Anywhere
+123                        ALLOW       Anywhere
+2200/tcp (v6)              ALLOW       Anywhere (v6)
+80/tcp (v6)                ALLOW       Anywhere (v6)
+123 (v6)                   ALLOW       Anywhere (v6)
