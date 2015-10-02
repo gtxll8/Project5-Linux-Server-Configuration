@@ -5,7 +5,7 @@ Udacity final project 5 Linux server configuration
  - to access this instance publically use : http://udacitymarket.no-ip.biz
  - the external IP is : http://52.89.6.106/ but it can only be used to view the website content as Google's OAuth 2.0 client IDs only accepts fully qualified domain names.
 
-##### Steps below are explained using unix commands and where neccessary commenting reasons behind the choices I have made
+##### Steps below are explained using unix commands and where neccessary commenting reasons behind the choices I have made, including links to some helpfull resources. 
 
 ###### Step 1 - Add new user grader, setup Key-based authentication, change default SSH port to 2200
 
@@ -25,3 +25,19 @@ and add:
  ```
 Resources: https://www.digitalocean.com/community/tutorials/how-to-install-and-use-logwatch-log-analyzer-and-reporter-on-a-vps
 
+###### Step 2 - Configuring local timezone to UTC
+Even though the instance from amazon had UTC already, am listing teh commands neccessary below:
+
+```
+dpkg-reconfigure tzdata
+
+result after :
+
+Current default time zone: 'Etc/UTC'
+Local time is now:      Fri Oct  2 09:21:31 UTC 2015.
+Universal Time is now:  Fri Oct  2 09:21:31 UTC 2015.
+
+calling Date will show now:
+
+Fri Oct  2 09:22:28 UTC 2015
+```
