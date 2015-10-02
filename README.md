@@ -26,7 +26,7 @@ and add:
 Resources: https://www.digitalocean.com/community/tutorials/how-to-install-and-use-logwatch-log-analyzer-and-reporter-on-a-vps
 
 ###### Step 2 - Configuring local timezone to UTC
-Even though the instance from amazon had UTC already, am listing teh commands neccessary below:
+Even though the instance from amazon had UTC already, am listing below the commands for reference:
 
 ```
 dpkg-reconfigure tzdata
