@@ -159,16 +159,145 @@ pip install Flask-Login
 pip install Flask-WTF
 pip install flask-seasurf
 ```
-Installed Git so I can clone the repository, I have cloned it in my home directory and copy the files
-across to /www/FlaskApp directory manually.
 
-** Important, disable directory browsing:
+to deactivate the venv:
+
+```
+deactivate
+```
+configuring the Virtual Host :
+
+```
+sudo nano /etc/apache2/sites-available/FlaskApp.conf
+```
+
+and here is my config, exposing both the IP and registered domain name:
+
+```
+<VirtualHost *:80>
+                ServerName http://udacitymarket.no-ip.biz
+                ServerAdmin admin@52.89.6.106
+                WSGIScriptAlias / /var/www/FlaskApp/flaskapp.wsgi
+                DocumentRoot /var/www/FlaskApp/FlaskApp
+                <Directory /var/www/FlaskApp/FlaskApp/>
+                        WSGIProcessGroup FlaskApp
+                        WSGIApplicationGroup %{GLOBAL}
+                        Order allow,deny
+                        Allow from all
+                </Directory>
+                Alias /static /var/www/FlaskApp/FlaskApp/static
+                <Directory /var/www/FlaskApp/FlaskApp/static/>
+                        Order allow,deny
+                        Allow from all
+                </Directory>
+                ErrorLog ${APACHE_LOG_DIR}/error.log
+                LogLevel warn
+                CustomLog ${APACHE_LOG_DIR}/access.log combined
+                <Directorymatch "^/.*/\.git/">
+                        Order deny,allow
+                        Deny from all
+                </Directorymatch>
+</VirtualHost>
+
+<VirtualHost *:80>
+                ServerName http://52.89.6.106
+                ServerAdmin admin@52.89.6.106
+                WSGIScriptAlias / /var/www/FlaskApp/flaskapp.wsgi
+                DocumentRoot /var/www/FlaskApp/FlaskApp
+                <Directorymatch "^/.*/\.git/">
+                        Order deny,allow
+                        Deny from all
+                </Directorymatch>
+</VirtualHost>
+```
+
+** One last important thing, disable directory browsing:
 ```
 ~$ sudo a2dismod autoindex
 ```
+enable the virtual host:
+
+```
+sudo a2ensite FlaskApp
+```
+
+creating teh .wsgi File :
+
+```
+sudo nano flaskapp.wsgi
+```
+
+```
+#!/usr/bin/python
+import sys
+import logging
+import os
+
+applicationPath = '/var/www/FlaskApp/FlaskApp'
+if applicationPath not in sys.path:
+    sys.path.insert(0, applicationPath)
+
+os.chdir(applicationPath)
+
+logging.basicConfig(stream=sys.stderr)
+sys.path.insert(0,"/var/www/FlaskApp/FlaskApp/")
+
+from project import app as application
+application.secret_key = 'xxxxxxxxxxxxxxxxxxx'
+
+```
+
+I've installed Git so I can clone the repository, I have cloned it in my home directory and copy the files
+across to /www/FlaskApp/FlaskApp/ directory manually.
+
+restart apache:
+```
+sudo service apache2 restart 
+```
+
 Resources:
 http://fideloper.com/user-group-permissions-chmod-apache
 https://www.digitalocean.com/community/tutorials/installing-mod_wsgi-on-ubuntu-12-04
 
+##### Step 4 - Install PosgreSQL and secure it
 
+install postgres:
+```
+sudo apt-get install postgresql
+```
+also to install psycopg2, we need libpq-dev:
+```
+sudo apt-get install libpq-dev
+pip install psycopg2
+```
+creating the catalog user, the default superuser for PostgreSQL is called postgres we will use it to create the new role:
 
+```
+$ sudo su - postgres
+postgres$ createuser --createdb --username postgres --no-createrole --pwprompt catalog
+Enter password for new role: 
+Enter it again: 
+Shall the new role be a superuser? (y/n) y
+CREATE ROLE
+postgre
+```
+securing postgres, no remote. For this we are looking into the host based authentication file:
+
+```
+sudo nano /etc/postgresql/9.1/main/pg_hba.conf
+```
+```
+# IPv4 local connections:
+host    all             all             127.0.0.1/32            md5
+# IPv6 local connections:
+host    all             all             ::1/128                 md5
+# Allow replication connections from localhost, by a user with the
+# replication privilege.
+#local   replication     postgres                                peer
+#host    replication     postgres        127.0.0.1/32            md5
+#host    replication     postgres        ::1/128                 md5
+```
+here we see that only local IPs are allowed.
+
+Reference:
+https://www.digitalocean.com/community/tutorials/how-to-secure-postgresql-on-an-ubuntu-vps
