@@ -221,7 +221,7 @@ enable the virtual host:
 sudo a2ensite FlaskApp
 ```
 
-creating teh .wsgi File :
+creating the .wsgi File :
 
 ```
 sudo nano flaskapp.wsgi
