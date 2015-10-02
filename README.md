@@ -8,7 +8,7 @@ Udacity final project 5 Linux server configuration
 ##### Steps below are explained using unix commands and where neccessary commenting reasons behind the choices I have taken
 
 ###### Step 1 - Add new user grader, setup Key-based authentication, change default SSH port to 2200
-''''
+ ```
 #adduser grader
 add this user to the www-data group so it can install the flask app ( I have restricted access to the www directory to www-data group )
 #usermod -a -G www-data grader
@@ -21,5 +21,5 @@ copy them over:
 #scp grader@xxx.xxx.167.124:~/.ssh/gradersrv_rsa.pub .
 and add:
 #cat gradersrv_rsa.pub >> authorized_keys
-''''
+ ```
 
