@@ -28,16 +28,17 @@ Resources: https://www.digitalocean.com/community/tutorials/how-to-install-and-u
 ###### Step 2 - Configuring local timezone to UTC
 Even though the instance from amazon was on UTC already, am listing below the commands for reference:
 
-`
+```
 dpkg-reconfigure tzdata
-`
+```
 result after :
-
+```
 Current default time zone: 'Etc/UTC'
 Local time is now:      Fri Oct  2 09:21:31 UTC 2015.
 Universal Time is now:  Fri Oct  2 09:21:31 UTC 2015.
+```
 
-calling Date will show now:
-
+calling "date" will now show:
+```
 Fri Oct  2 09:22:28 UTC 2015
 ```
