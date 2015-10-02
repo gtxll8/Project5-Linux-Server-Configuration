@@ -82,18 +82,27 @@ calling "~$ date" will now show:
 Fri Oct  2 09:22:28 UTC 2015
 ```
 ##### Step 3 - Enable and configure UFW
-! Make sure that before UFW is enabled the ssh port 2200 is allowed or risk locking out of your instance.
+- Make sure that before UFW is enabled the ssh port 2200 is allowed or risk locking out of your instance!
 
 change ssh port to 2200
+```
 ~$ sudo ufw allow 2200/tcp
+```
 allow 80, 124
+```
 ~$ sudo ufw allow ntp
-#~$ sudo ufw allow http
-enable:
-#~$ sudo ufw enable
-check status:
-#~$ sudo ufw status
 
+~$ sudo ufw allow http
+```
+enable:
+```
+~$ sudo ufw enable
+```
+check status:
+```
+~$ sudo ufw status
+```
+```
 To                         Action      From
 --                         ------      ----
 2200/tcp                   ALLOW       Anywhere
@@ -102,3 +111,5 @@ To                         Action      From
 2200/tcp (v6)              ALLOW       Anywhere (v6)
 80/tcp (v6)                ALLOW       Anywhere (v6)
 123 (v6)                   ALLOW       Anywhere (v6)
+```
+
