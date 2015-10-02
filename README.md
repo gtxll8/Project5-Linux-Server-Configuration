@@ -116,17 +116,42 @@ To                         Action      From
 
 I have secured the  /var/www/ folder and making it accessible only to users in www-data group, reson why grader is made part of that group earlier.
 
-install teh neccessary:
+install the neccessary:
 ```
 ~$ sudo aptitude install apache2 apache2.2-common apache2-mpm-prefork apache2-utils libexpat1 ssl-cert
 ```
 install mod-wsgi:
 ```
 ~$ sudo aptitude install libapache2-mod-wsgi
+```
+to enable mod_wsgi, run the following
+```
 ~$ sudo a2enmod wsgi
 ~$ sudo service apache2 restart
 ```
-**Important, disable directory browsing:
+create the structure to serve the app, I've used following commands:
+```
+~$ cd /var/www 
+~$ sudo mkdir FlaskApp
+~$ sudo mkdir FlaskApp
+~$ cd FlaskApp
+~$ sudo mkdir static templates
+```
+My directory structure after this:
+
+|----FlaskApp
+|---------FlaskApp
+|--------------static
+|--------------templates
+
+I have also used virtual environment to isolate from the main local host. Installed pip fpr this:
+```
+sudo apt-get install python-pip 
+sudo pip install virtualenv 
+
+
+
+** Important, disable directory browsing:
 ```
 ~$ sudo a2dismod autoindex
 ```
