@@ -5,9 +5,10 @@ Udacity final project 5 Linux server configuration
  - to access this instance publically use : http://udacitymarket.no-ip.biz
  - the external IP is : http://52.89.6.106/ but it can only be used to view the website content as Google's OAuth 2.0 client IDs only accepts fully qualified domain names.
 
-##### Steps below are explained using unix commands and where neccessary commenting reasons behind the choices I have taken
+##### Steps below are explained using unix commands and where neccessary commenting reasons behind the choices I have made
 
 ###### Step 1 - Add new user grader, setup Key-based authentication, change default SSH port to 2200
+
  ```
 #adduser grader
 add this user to the www-data group so it can install the flask app ( I have restricted access to the www directory to www-data group )
@@ -22,4 +23,5 @@ copy them over:
 and add:
 #cat gradersrv_rsa.pub >> authorized_keys
  ```
+Resources: https://www.digitalocean.com/community/tutorials/how-to-install-and-use-logwatch-log-analyzer-and-reporter-on-a-vps
 
